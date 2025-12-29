@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>@SportsEera~JW</title>
 
-<!-- JW Player -->
 <script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
 
 <style>
@@ -41,27 +40,24 @@ html,body{
   user-select:none
 }
 
-/* 🔘 FIT BUTTON (JW STYLE) */
-#fitBtn{
-  background:transparent;
-  color:#fff;
-  border:none;
-  font-size:13px;
-  font-weight:700;
-  padding:6px 8px;
+/* 🔘 JW FIT BUTTON (PLYR STYLE) */
+.jw-fit-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:40px;
+  height:40px;
   cursor:pointer;
-  opacity:.9;
+  opacity:.85;
 }
-#fitBtn:hover{opacity:1}
+.jw-fit-btn:hover{opacity:1}
+.jw-fit-btn svg{width:20px;height:20px;fill:#fff}
 </style>
 </head>
 
 <body>
 <div id="player"></div>
-
-<!-- overlays -->
 <div id="watermark">@SportsEera</div>
-<button id="fitBtn">FIT</button>
 
 <script>
 /* ---------- helpers ---------- */
@@ -70,17 +66,14 @@ const qp = k => new URLSearchParams(location.search).get(k);
 /* ---------- params ---------- */
 const id  = qp("id");
 const url = qp("url");
-const jsonUrl = "https://eerajson.pages.dev/Data/m3u8.json";   // 🔁 apna JSON path yahan
+const jsonUrl = "streams.json"; // apna JSON
 
 async function getSource(){
-  if(url) return url;          // ?url= priority
+  if(url) return url;
   if(!id) return null;
-
   const r = await fetch(jsonUrl);
   const j = await r.json();
-  if(!j[id]) return null;
-
-  return j[id].url;
+  return j[id]?.url || null;
 }
 
 (async()=>{
@@ -90,52 +83,65 @@ async function getSource(){
     return;
   }
 
-  /* ---------- init jw ---------- */
   jwplayer("player").setup({
     file: src,
     type: "hls",
     autostart: true,
-    mute: false,
     width: "100%",
     height: "100%",
-    stretching: "uniform",   // FIT default
+    stretching: "uniform",
     controls: true
   });
 
-  /* ---------- FIT / COVER LOGIC ---------- */
-  let isCover = false;
-  document.getElementById("fitBtn").onclick = () => {
-    isCover = !isCover;
-    jwplayer().setConfig({
-      stretching: isCover ? "fill" : "uniform"
-    });
-    document.getElementById("fitBtn").innerText = isCover ? "COVER" : "FIT";
-  };
-
-  /* ---------- inject watermark + FIT into player ---------- */
+  /* ---------- watermark inside player ---------- */
   jwplayer().on("ready", () => {
-    const container = document.getElementById("player");
-    container.appendChild(document.getElementById("watermark"));
+    document.getElementById("player")
+      .appendChild(document.getElementById("watermark"));
 
     injectFitButton();
   });
 
+  /* ---------- re-inject on fullscreen ---------- */
+  jwplayer().on("fullscreen", injectFitButton);
+
 })();
 
-/* ---------- inject FIT button into JW control bar ---------- */
+/* ---------- FIT / COVER BUTTON (REAL WORKING) ---------- */
+let isCover = false;
+
 function injectFitButton(){
-  const interval = setInterval(() => {
-    const rightControls = document.querySelector(".jw-controlbar-right-group");
-    if(!rightControls) return;
+  const wait = setInterval(()=>{
+    const right = document.querySelector(".jw-controlbar-right-group");
+    if(!right) return;
 
-    clearInterval(interval);
+    if(right.querySelector(".jw-fit-btn")){
+      clearInterval(wait);
+      return;
+    }
 
-    const btn = document.getElementById("fitBtn");
-    rightControls.insertBefore(
-      btn,
-      rightControls.querySelector(".jw-icon-fullscreen")
-    );
-  }, 300);
+    clearInterval(wait);
+
+    const btn = document.createElement("div");
+    btn.className = "jw-fit-btn";
+    btn.title = "Fit / Cover";
+
+    btn.innerHTML = `
+      <svg viewBox="0 0 24 24">
+        <path d="M3 3h7v2H5v5H3V3m18 0v7h-2V5h-5V3h7M3 21v-7h2v5h5v2H3m18-7v7h-7v-2h5v-5h2Z"/>
+      </svg>
+    `;
+
+    btn.onclick = () => {
+      isCover = !isCover;
+      jwplayer().setConfig({
+        stretching: isCover ? "fill" : "uniform"
+      });
+      btn.style.opacity = isCover ? "1" : ".7";
+    };
+
+    const fs = right.querySelector(".jw-icon-fullscreen");
+    right.insertBefore(btn, fs);
+  }, 200);
 }
 </script>
 </body>
