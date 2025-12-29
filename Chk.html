@@ -33,6 +33,22 @@ html, body {
   background: #000;
 }
 
+/* WATERMARK */
+#watermark{
+  position:absolute;
+  top:60%;
+  left:15px;
+  z-index:10;
+  pointer-events:none;
+  color:rgba(0,0,0,.35);   /* black transparent */
+  text-shadow:0 0 4px rgba(255,255,255,.15); /* halka glow so visible rahe */
+  font-size:.6em;
+  font-weight:500;
+  letter-spacing:1px;
+  text-shadow:0 0 6px rgba(0,0,0,.6);
+  user-select:none
+}
+
 /* 🔥 LOGO INSIDE PLAYER */
 .plyr-logo {
   position: absolute;
@@ -54,6 +70,7 @@ html, body {
 <div id="player-wrapper">
   <video id="plyr-player" controls playsinline></video>
 </div>
+  <div id="watermark">@SportsEera</div>
 
 <script>
 /* ---------------- HELPERS ---------------- */
