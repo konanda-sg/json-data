@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="referrer" content="no-referrer" />
+<title>@SportsEera~Tg</title>
+
+<!-- Plyr + HLS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css"/>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+}
+
+#player-wrapper {
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+#plyr-player {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+/* WATERMARK */
+#watermark{
+  position:absolute;
+  top:60%;
+  left:15px;
+  z-index:10;
+  pointer-events:none;
+  color:rgba(0,0,0,.35);   /* black transparent */
+  text-shadow:0 0 4px rgba(255,255,255,.15); /* halka glow so visible rahe */
+  font-size:.6em;
+  font-weight:500;
+  letter-spacing:1px;
+  text-shadow:0 0 6px rgba(0,0,0,.6);
+  user-select:none
+}
+
+/* 🔥 LOGO INSIDE PLAYER */
+.plyr-logo {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 3;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.plyr-logo img {
+  height: 30px;
+  border-radius: 6px;
+}
+</style>
+</head>
+
+<body>
+<div id="player-wrapper">
+  <video id="plyr-player" controls playsinline></video>
+</div>
+  <div id="watermark">@SportsEera</div>
+
+<script>
+/* ---------------- HELPERS ---------------- */
+function qp(k){
+  return new URLSearchParams(location.search).get(k);
+}
+function isM3U8(u){
+  return u && u.toLowerCase().includes(".m3u8");
+}
+
+/* ---------------- PARAMS ---------------- */
+const id  = qp("id");
+const url = qp("url");
+const jsonUrl = "https://eerajson.pages.dev/Data/m3u8.json";
+
+const video = document.getElementById("plyr-player");
+let player;
+let isCover = false;
+
+/* ---------------- INIT ---------------- */
+async function initPlayer(){
+  let videoSrc = url;
+
+  if(id){
+    try{
+      const r = await fetch(jsonUrl);
+      const j = await r.json();
+      if(!j[id]) return alert("ID not found in JSON");
+      videoSrc = j[id].url;
+    }catch(e){
+      alert("Failed to fetch json");
+      return;
+    }
+  }
+
+  if(!videoSrc) return alert("Use ?id= or ?url=");
+
+  const plyrConfig = {
+    clickToPlay: true,
+    controls: [
+      "play-large",
+      "play",
+      "progress",
+      "current-time",
+      "mute",
+      "volume",
+      "pip",
+      "settings",
+      "fullscreen"
+    ],
+    settings: ["quality", "speed"]
+  };
+
+  if(Hls.isSupported() && isM3U8(videoSrc)){
+    const hls = new Hls({ maxBufferLength: 30 });
+    hls.loadSource(videoSrc);
+    hls.attachMedia(video);
+
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      const qualities = hls.levels
+        .map(l => l.height)
+        .filter((v,i,a)=>a.indexOf(v)===i)
+        .sort((a,b)=>a-b);
+
+      plyrConfig.quality = {
+        default: qualities[qualities.length - 1],
+        options: qualities,
+        forced: true,
+        onChange: q => {
+          hls.levels.forEach((l,i)=>{
+            if(l.height === q) hls.currentLevel = i;
+          });
+        }
+      };
+
+      player = new Plyr(video, plyrConfig);
+      hls.currentLevel = hls.levels.length - 1;
+
+      addFitButton();
+      addLogo();
+      addWatermark();
+    });
+
+  } else {
+    video.src = videoSrc;
+    player = new Plyr(video, plyrConfig);
+    addFitButton();
+    addLogo();
+    addWatermark();
+  }
+}
+
+/* ---------------- FIT / COVER BUTTON ---------------- */
+function addFitButton(){
+  const controls = video.closest(".plyr")?.querySelector(".plyr__controls");
+  if(!controls) return;
+
+  const btn = document.createElement("button");
+  btn.className = "plyr__control";
+  btn.title = "Fit / Cover";
+  btn.style.opacity = "0.7";
+
+  btn.innerHTML = `
+    <svg viewBox="0 0 24 24" width="20" height="20">
+      <path fill="currentColor"
+        d="M3 3h7v2H5v5H3V3m18 0v7h-2V5h-5V3h7M3 21v-7h2v5h5v2H3m18-7v7h-7v-2h5v-5h2Z"/>
+    </svg>
+  `;
+
+  btn.onclick = () => {
+    isCover = !isCover;
+    video.style.objectFit = isCover ? "cover" : "contain";
+    btn.style.opacity = isCover ? "1" : "0.6";
+  };
+
+  const fs = controls.querySelector('[data-plyr="fullscreen"]');
+  controls.insertBefore(btn, fs);
+}
+
+/* ---------------- LOGO INSIDE PLAYER ---------------- */
+function addLogo(){
+  const plyr = video.closest(".plyr");
+  if(!plyr) return;
+
+  const logo = document.createElement("div");
+  logo.className = "plyr-logo";
+  logo.innerHTML = `
+    <img src="https://eerajson.pages.dev/Data/c848aa31-6f72-4a64-b3b9-323f020f01bc.jpg-output.png">
+  `;
+  plyr.appendChild(logo);
+}
+/* ---------------- WATERMARK INSIDE PLAYER ---------------- */
+function addWatermark(){
+  const plyr = video.closest(".plyr");
+  if(!plyr) return;
+
+  const wm = document.createElement("div");
+  wm.id = "watermark";
+  wm.innerText = "@SportsEera";
+
+  plyr.appendChild(wm);
+  }
+
+initPlayer();
+</script>
+</body>
+  </html>
