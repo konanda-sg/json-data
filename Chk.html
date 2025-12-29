@@ -84,7 +84,7 @@ function isM3U8(u){
 /* ---------------- PARAMS ---------------- */
 const id  = qp("id");
 const url = qp("url");
-const jsonUrl = "streams.json";
+const jsonUrl = "https://eerajson.pages.dev/Data/m3u8.json";
 
 const video = document.getElementById("plyr-player");
 let player;
@@ -101,7 +101,7 @@ async function initPlayer(){
       if(!j[id]) return alert("ID not found in JSON");
       videoSrc = j[id].url;
     }catch(e){
-      alert("Failed to fetch JSON");
+      alert("Failed to fetch json");
       return;
     }
   }
