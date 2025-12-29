@@ -25,44 +25,34 @@ html,body{
   height:100%;
 }
 
-/* 🔥 WATERMARK */
+/* WATERMARK */
 #watermark{
   position:absolute;
-  bottom:12%;
-  left:6%;
-  z-index:9999;
+  top:60%;
+  left:10%;
+  z-index:10;
   pointer-events:none;
-
-  color:#000;
-  font-size:12px;
-  font-weight:800;
+  color:rgba(0,0,0,1);   /* black transparent */
+  text-shadow:0 0 4px rgba(255,255,255,.15); /* halka glow so visible rahe */
+  font-size:10px;
+  font-weight:950;
   letter-spacing:1px;
-
-  text-shadow:
-    0 0 2px rgba(255,255,255,.35),
-    0 0 6px rgba(0,0,0,.9);
-
-  user-select:none;
-  white-space:nowrap;
+  text-shadow:0 0 6px rgba(0,0,0,.6);
+  user-select:none
 }
 
-/* 🔘 FIT / COVER BUTTON */
+/* 🔘 FIT BUTTON (JW STYLE) */
 #fitBtn{
-  position:absolute;
-  bottom:70px;
-  right:14px;
-  z-index:9999;
-
-  background:rgba(0,0,0,.6);
+  background:transparent;
   color:#fff;
   border:none;
-  border-radius:6px;
-  padding:8px 10px;
-  font-size:12px;
+  font-size:13px;
+  font-weight:700;
+  padding:6px 8px;
   cursor:pointer;
-  opacity:.85;
+  opacity:.9;
 }
-#fitBtn:active{transform:scale(.95)}
+#fitBtn:hover{opacity:1}
 </style>
 </head>
 
@@ -70,7 +60,7 @@ html,body{
 <div id="player"></div>
 
 <!-- overlays -->
-<div id="watermark">✈️ @SportsEera</div>
+<div id="watermark">@SportsEera</div>
 <button id="fitBtn">FIT</button>
 
 <script>
@@ -80,11 +70,11 @@ const qp = k => new URLSearchParams(location.search).get(k);
 /* ---------- params ---------- */
 const id  = qp("id");
 const url = qp("url");
-const jsonUrl = "https://eerajson.pages.dev/Data/m3u8.json"; // 🔁 apna JSON path yahan
+const jsonUrl = "https://eerajson.pages.dev/Data/m3u8.json";   // 🔁 apna JSON path yahan
 
 async function getSource(){
   if(url) return url;          // ?url= priority
-  if(!id) return null;         // kuch bhi nahi
+  if(!id) return null;
 
   const r = await fetch(jsonUrl);
   const j = await r.json();
@@ -112,7 +102,7 @@ async function getSource(){
     controls: true
   });
 
-  /* ---------- FIT / COVER ---------- */
+  /* ---------- FIT / COVER LOGIC ---------- */
   let isCover = false;
   document.getElementById("fitBtn").onclick = () => {
     isCover = !isCover;
@@ -122,14 +112,31 @@ async function getSource(){
     document.getElementById("fitBtn").innerText = isCover ? "COVER" : "FIT";
   };
 
-  /* ---------- force overlays inside player ---------- */
+  /* ---------- inject watermark + FIT into player ---------- */
   jwplayer().on("ready", () => {
     const container = document.getElementById("player");
     container.appendChild(document.getElementById("watermark"));
-    container.appendChild(document.getElementById("fitBtn"));
+
+    injectFitButton();
   });
 
 })();
+
+/* ---------- inject FIT button into JW control bar ---------- */
+function injectFitButton(){
+  const interval = setInterval(() => {
+    const rightControls = document.querySelector(".jw-controlbar-right-group");
+    if(!rightControls) return;
+
+    clearInterval(interval);
+
+    const btn = document.getElementById("fitBtn");
+    rightControls.insertBefore(
+      btn,
+      rightControls.querySelector(".jw-icon-fullscreen")
+    );
+  }, 300);
+}
 </script>
 </body>
 </html>
