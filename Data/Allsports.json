@@ -341,6 +341,16 @@
     "keyId": "ab947ddbb9795d38bff35597b4f73108",
     "key": "2671e22eb7dc174c35b6aad4b113f7b0",
     "logo": "https://jiotvimages.cdn.jio.com/dare_images/images/Sports18_Khel.png"
+  }, 
+  {
+    "name": "sony liv",
+    "id": "2000",
+    "url1": "https://jiotvpllive.cdn.jio.com/bpk-tv/SonyLIV_Sports_1_MOB/WDVLive/index.mpd",
+    "url2": "https://jiotvpllive.cdn.jio.com/bpk-tv/SonyLIV_Sports_1_MOB/WDVLive/index.mpd",
+    "url3": "https://jiotvpllive.cdn.jio.com/bpk-tv/SonyLIV_Sports_1_MOB/WDVLive/index.mpd",
+    "keyId": "4e4c5dba5bfe5a7c9338bc086eb80379",
+    "key": "b8e8932f440084e1d2b705fa52eef94b",
+    "logo": "https://i.ibb.co/5WZ2CNSf/1000029431.jpg"
   }
 ]
 
