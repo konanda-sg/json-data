@@ -26,9 +26,9 @@
   "ss1-kan": "https://sportseera.pages.dev/SportsEera/Startv?id=1650", 
   "ss3-eng": "https://sportseera.pages.dev/SportsEera/Startv?id=147",
   "ss-khel": "https://sportseera.pages.dev/SportsEera/Startv?id=1998", 
-    "willowsports": "https://sportseera.pages.dev/SportsEera/webplayer/mpd?id=willowsports",
-    "tnt4": "https://sportseera.pages.dev/SportsEera/webplayer/mpd.html?id=tnt4",
-    "tnt1": "https://sportseera.pages.dev/SportsEera/webplayer/mpd.html?id=tnt1", 
-    "tnt2": "https://sportseera.pages.dev/SportsEera/webplayer/mpd.html?id=tnt2",
-    "tnt3": "https://sportseera.pages.dev/SportsEera/webplayer/mpd.html?id=tnt3"
+    "willowsports": "https://jrsports.pages.dev/mplay?id=willowsports",
+    "tnt4": "https://jrsports.pages.dev/mplay?id=tnt4",
+    "tnt1": "https://jrsports.pages.dev/mplay?id=tnt1", 
+    "tnt2": "https://jrsports.pages.dev/mplay?id=tnt2",
+    "tnt3": "https://jrsports.pages.dev/mplay?id=tnt3"
 }
