@@ -1,4 +1,11 @@
 {
+  "primehin": {
+    "url": "https://a65live-pv-ta-amazon.akamaized.net/syd-nitro/live/clients/dash/enc/fclywfntvr/out/v1/e21d21ec21e34c7192049a44ee3de428/cenc.mpd",
+    "keys": {
+      "ed76c18710d621a87c89dedc7c13019f": "7241c82fe48525a9dc6be6d7bb86611f"
+    },
+    "poster": "https://envs.sh/IGc.jpg"
+  },
   "Criclifew": {
     "url": "https://ev-fast-mpd.starzplayarabia.com/live/eds/CricLife_Women_27112025/DASH/CricLife_Women_27112025.mpd",
     "keys": {
