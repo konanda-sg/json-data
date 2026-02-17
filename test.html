@@ -35,18 +35,6 @@
       visibility: hidden !important;
       opacity: 0 !important;
     }
-    /* Logo Overlay */
-    .shaka-logo-overlay {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-      pointer-events: none;
-    }
-    .shaka-logo-overlay img {
-      width: 75px;
-      opacity: 0.9;
-    }
   </style>
 </head>
 
@@ -149,13 +137,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (streamData.poster) {
     video.setAttribute("poster", streamData.poster);
   }
-
-    // Logo inside container (fullscreen safe)
-  const logoDiv = document.createElement("div");
-      logoDiv.className = "shaka-logo-overlay";
-      logoDiv.innerHTML = `<img src="https://eerajson.pages.dev/Data/c848aa31-6f72-4a64-b3b9-323f020f01bc.jpg-output.png">`;
-      container.appendChild(logoDiv);
-
 
   // 🔥 Auto Fix ClearKeys
   const formattedKeys = {};
