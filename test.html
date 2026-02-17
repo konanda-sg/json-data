@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tg ~ @SportsEera</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      background: #000;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+    .shaka-video-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      object-fit: contain;
+    }
+    .shaka-spinner-container,
+    .shaka-spinner,
+    .shaka-spinner-svg {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+    }
+    /* Logo Overlay */
+    .shaka-logo-overlay {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      pointer-events: none;
+    }
+    .shaka-logo-overlay img {
+      width: 75px;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="shaka-video-container" data-shaka-player>
+  <video autoplay playsinline preload="metadata" poster=""></video>
+</div>
+
+<script>
+
+const JSON_URL = "https://eerajson.pages.dev/Data/mpd.json";
+
+function getQueryParams() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    id: params.get("id"),
+    url: params.get("url"),
+    key: params.get("key")
+  };
+}
+
+async function getStreamData() {
+  const { id, url, key } = getQueryParams();
+
+  if (id) {
+    try {
+      const res = await fetch(JSON_URL);
+      const data = await res.json();
+      if (!data[id]) throw new Error("Invalid ID");
+
+      return {
+        streamUrl: data[id].url,
+        clearKeys: data[id].keys,
+        poster: data[id].poster || null
+      };
+    } catch (e) {
+      console.error("JSON error:", e);
+      return null;
+    }
+  }
+
+  if (url && key) {
+    const [kid, value] = key.split(":");
+    if (!kid || !value) return null;
+
+    return {
+      streamUrl: url,
+      clearKeys: { [kid.trim()]: value.trim() },
+      poster: null
+    };
+  }
+
+  return null;
+}
+
+// 🔥 HEX → BASE64 (Shaka Compatible)
+function hexToBase64(hex) {
+  const bytes = new Uint8Array(hex.match(/.{1,2}/g).map(b => parseInt(b, 16)));
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  return btoa(binary)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+  shaka.polyfill.installAll();
+
+  if (!shaka.Player.isBrowserSupported()) {
+    console.error('Browser not supported');
+    return;
+  }
+
+  const video = document.querySelector('video');
+  const player = new shaka.Player();
+  await player.attach(video);
+
+  const container = document.querySelector('.shaka-video-container');
+  const ui = new shaka.ui.Overlay(player, container, video);
+
+  ui.configure({
+    controlPanelElements: [
+      'play_pause', 'time_and_duration', 'mute', 'volume',
+      'spacer', 'language', 'captions', 'picture_in_picture',
+      'quality', 'fullscreen', 'overflow_menu'
+    ]
+  });
+
+  const streamData = await getStreamData();
+
+  if (!streamData) {
+    console.error("Missing ?id= or ?url=&key=");
+    return;
+  }
+
+  // Poster logic same
+  if (streamData.poster) {
+    video.setAttribute("poster", streamData.poster);
+  }
+
+    // Logo inside container (fullscreen safe)
+  const logoDiv = document.createElement("div");
+      logoDiv.className = "shaka-logo-overlay";
+      logoDiv.innerHTML = `<img src="https://eerajson.pages.dev/Data/c848aa31-6f72-4a64-b3b9-323f020f01bc.jpg-output.png">`;
+      container.appendChild(logoDiv);
+
+
+  // 🔥 Auto Fix ClearKeys
+  const formattedKeys = {};
+  for (let kid in streamData.clearKeys) {
+    formattedKeys[hexToBase64(kid)] = hexToBase64(streamData.clearKeys[kid]);
+  }
+
+  player.configure({
+    drm: { clearKeys: formattedKeys },
+
+    abr: {
+      enabled: true,
+      defaultBandwidthEstimate: 8000000,
+      switchInterval: 2,
+      bandwidthUpgradeTarget: 0.85,
+      bandwidthDowngradeTarget: 0.95
+    },
+
+    streaming: {
+      lowLatencyMode: true,
+      bufferingGoal: 12,
+      rebufferingGoal: 1.5,
+      bufferBehind: 15,
+      retryParameters: {
+        timeout: 8000,
+        maxAttempts: 5,
+        baseDelay: 250,
+        backoffFactor: 1.2
+      },
+      segmentRequestTimeout: 7000,
+      segmentPrefetchLimit: 3,
+      useNativeHlsOnSafari: true
+    },
+
+    manifest: {
+      retryParameters: {
+        timeout: 7000,
+        maxAttempts: 3
+      }
+    }
+  });
+
+  player.addEventListener('error', (event) => {
+    console.error('Shaka Player Error:', event.detail);
+  });
+
+  try {
+    await player.load(streamData.streamUrl);
+    console.log("Stream loaded successfully");
+  } catch (error) {
+    console.error('Load error:', error);
+  }
+
+});
+
+</script>
+
+</body>
+</html>
