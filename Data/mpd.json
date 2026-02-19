@@ -42,9 +42,9 @@
     "poster": ""
   }, 
   "tnt1": {
-    "url": "https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/live/dash/enc/bsaaetko8v/out/v1/bd3b0c314fff4bb1ab4693358f3cd2d3/cenc.mpd",
-    "keys": {
-      "d0f2e5c39e70c18f29bf77768a1ad89a": "d6853c51fcf37a18905f0609972395d7"
+        "url": "https://netskrt.live.pv-cdn.net/OTTB/lhr-nitro/live/clients/dash/enc/cllekigzzn/out/v1/bd3b0c314fff4bb1ab4693358f3cd2d3/cenc.mpd",
+        "keys": {
+            "294b5761cefc22d0c6312939e13d8278": "52148f1042d238849f0a7813f1da8a7b"
     },
     "poster": ""
   },
