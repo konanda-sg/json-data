@@ -20,60 +20,56 @@
     },
     "poster": "https://envs.sh/IGc.jpg"
   },
-  "hub4": {
-    "url": "",
-    "keys": {
-      "":""
-    },
-    "poster": "https://envs.sh/IGc.jpg"
-  },
   "prime": {
     "url": "https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/clients/dash/enc/wohxowvaty/out/v1/2298afadf64943adb0b44dc540ace1ce/cenc.mpd", 
     "keys": {
       "cd2266bd1085a92143007be26296daeb":"1a21a3cbb8e8062c3a82135a47389c2b"
     },
-    "poster": "https://elamplificador.com/wp-content/uploads/2023/08/trucos-amazon-primevideo-ksrD-620x349@abc.png"
+    "poster": ""
   },
   "willowsports": {
     "url": "https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/clients/dash/enc/f60kqesunw/out/v1/a435ed7a00f947deb4369b46d8f2fb70/cenc.mpd",
     "keys": {
       "1779c27b9d077a3ba0c9cc1bb9a94b9f": "cc5cf3b7928fb9e0a1ee6a8b566f0a8e"
     },
-    "poster": "https://envs.sh/Ab3.jpg/HGBOTZ.jpg"
+    "poster": ""
   },
   "shoq": {
     "url": "https://live2.shoq.com.pk/live/eds/ICC_Women_World_Cup_2025/DASH/ICC_Women_World_Cup_2025.mpd",
     "keys": {
       "a6dfc4f17d70d8d07639659193f03b25":"893eacfabe386144b81733d622a7ad17"
     },
-    "poster": "https://envs.sh/Ab3.jpg/HGBOTZ.jpg"
-  },
-  "tnt4": {
-    "url": "https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/dash/enc/i2pcjr4pe5/out/v1/912e9db56d75403b8a9ac0a719110f36/cenc.mpd",
-    "keys": {
-      "192b1115da041585c77200128549efa1": "634e10efe4abbb14be400a3ccbac0258"
-    },
-    "poster": "https://envs.sh/Ab3.jpg/HGBOTZ.jpg"
-  },
-  "tnt3": {
-    "url": "https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/dash/enc/lsdasbvglv/out/v1/bb548a3626cd4708afbb94a58d71dce9/cenc.mpd",
-    "keys": {
-      "a93c1cbfdccd23233bac13540c693e7f": "2f6ab2e6693eb847eff3c9da8f9d01fc"
-    },
-    "poster": "https://envs.sh/Ab3.jpg/HGBOTZ.jpg"
-  },
-  "tnt2": {
-    "url": "https://ottb.live.cf.ww.aiv-cdn.net/lhr-nitro/live/dash/enc/enniazhzls/out/v1/f8fa17f087564f51aa4d5c700be43ec4/cenc.mpd",
-    "keys": {
-      "9f51f3dc6313ac8bc668e2d9d1c04dfa": "74bc63e5a193454a91ca494975db33f9"
-    },
-    "poster": "https://envs.sh/Ab3.jpg/HGBOTZ.jpg"
-  },
+    "poster": ""
+  }, 
   "tnt1": {
     "url": "https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/live/dash/enc/bsaaetko8v/out/v1/bd3b0c314fff4bb1ab4693358f3cd2d3/cenc.mpd",
     "keys": {
       "d0f2e5c39e70c18f29bf77768a1ad89a": "d6853c51fcf37a18905f0609972395d7"
     },
-    "poster": "https://envs.sh/Ab3.jpg/HGBOTZ.jpg"
+    "poster": ""
+  },
+
+  "tnt2": {
+    "url": "https://netskrt.live.pv-cdn.net/OTTB/lhr-nitro/live/clients/dash/enc/fb6jy4pxts/out/v1/f8fa17f087564f51aa4d5c700be43ec4/cenc.mpd",
+    "keys": {
+      "f288380ca4cef9ad3f27a92a08e9bb8b": "9f18d26291d9230833501f7f822f6875"
+    },
+    "poster": ""
+  },
+
+  "tnt3": {
+    "url": "https://netskrt.live.pv-cdn.net/OTTB/lhr-nitro/live/clients/dash/enc/5sxuux529k/out/v1/bb548a3626cd4708afbb94a58d71dce9/cenc.mpd",
+    "keys": {
+      "1d96ab366bbe6451edf7407b58e2fa16": "0116201f4a63ac5bf5787d2c610c41a7"
+    },
+    "poster": ""
+  },
+
+  "tnt4": {
+    "url": "https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/live/dash/enc/pnu10tp36z/out/v1/912e9db56d75403b8a9ac0a719110f36/cenc.mpd",
+    "keys": {
+      "192b1115da041585c77200128549efa1": "634e10efe4abbb14be400a3ccbac0258"
+    },
+    "poster": ""
   }
 }
