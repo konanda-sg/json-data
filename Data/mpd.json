@@ -1,11 +1,4 @@
 {
-  "primehin": {
-    "url": "https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/live/dash/enc/feh5lmnfkl/out/v1/2f30a0bcdbc64a09b2e101d0b71ed290/cenc.mpd",
-    "keys": {
-      "dc9ab6bff6028c1685847a104e2d5a21": "de34baecf3f167ad1c847836397d38ca"
-    },
-    "poster": "https://envs.sh/IGc.jpg"
-  },
   "Criclifew": {
     "url": "https://ev-fast-mpd.starzplayarabia.com/live/eds/CricLife_Women_27112025/DASH/CricLife_Women_27112025.mpd",
     "keys": {
@@ -19,13 +12,6 @@
       "48bef83b4c6a3c5189b01b0126210da4": "bd085230b7b09e50954fe0af111a8a9f"
     },
     "poster": "https://envs.sh/IGc.jpg"
-  },
-  "prime": {
-    "url": "https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/clients/dash/enc/wohxowvaty/out/v1/2298afadf64943adb0b44dc540ace1ce/cenc.mpd", 
-    "keys": {
-      "cd2266bd1085a92143007be26296daeb":"1a21a3cbb8e8062c3a82135a47389c2b"
-    },
-    "poster": ""
   },
   "willowsports": {
     "url": "https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/clients/dash/enc/f60kqesunw/out/v1/a435ed7a00f947deb4369b46d8f2fb70/cenc.mpd",
@@ -41,6 +27,15 @@
     },
     "poster": ""
   }, 
+  
+   "mycofhd": {
+        "url": "https://ml-pull-rtmp-pk1.myco.io/Clean2/dash/index.mpd",
+        "keys": {
+            "29256eae859c52928db4c3fc77b01588": "0371f71ce2e897e893a9532e540fbc0f"
+        }, 
+     "poster": "" 
+    },
+  
   "tnt1": {
         "url": "https://netskrt.live.pv-cdn.net/OTTB/lhr-nitro/live/clients/dash/enc/cllekigzzn/out/v1/bd3b0c314fff4bb1ab4693358f3cd2d3/cenc.mpd",
         "keys": {
